@@ -12,6 +12,7 @@ import {
   orderBy,
   serverTimestamp,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyCTrzs8_L-G0s34tSjnMUtrUPG8m7q-YB8",
@@ -65,6 +66,18 @@ deleteBookForm.addEventListener("submit", (e) => {
   const docRef = doc(db, "books", deleteBookForm.id.value);
   deleteDoc(docRef).then(() => {
     deleteBookForm.reset();
+  });
+});
+
+// updating a document
+const updateForm = document.querySelector(".update");
+updateForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const docRef = doc(db, "books", updateForm.id.value);
+  updateDoc(docRef, {
+    title: "updated title",
+  }).then(() => {
+    updateForm.reset();
   });
 });
 
