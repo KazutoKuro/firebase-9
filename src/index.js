@@ -9,6 +9,8 @@ import {
   doc,
   query,
   where,
+  orderBy,
+  serverTimestamp,
 } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyCTrzs8_L-G0s34tSjnMUtrUPG8m7q-YB8",
@@ -29,11 +31,14 @@ const db = getFirestore();
 const colRef = collection(db, "books");
 
 // queries
-const q = query(colRef, where("author", "==", "patrick rothfuss"));
+// const q = query(
+//   colRef,
+//   where("author", "==", "patrick rothfuss"),
+//   orderBy("title", "desc")
+// );
+const q = query(colRef, orderBy("createdAt"));
 
 // real time get collection data
-
-// onSnapshot(colRef, (snapshot) => {
 onSnapshot(q, (snapshot) => {
   let books = [];
   snapshot.docs.forEach((doc) => {
@@ -41,19 +46,6 @@ onSnapshot(q, (snapshot) => {
   });
   console.log(books);
 });
-
-// getDocs(colRef)
-//   .then((snapshot) => {
-//     // console.log(snapshot.docs);
-//     let books = [];
-//     snapshot.docs.forEach((doc) => {
-//       books.push({ ...doc.data(), id: doc.id });
-//     });
-//     console.log(books);
-//   })
-//   .catch((err) => {
-//     console.log(err.message);
-//   });
 
 // adding docs
 const addBookForm = document.querySelector(".add");
@@ -63,6 +55,7 @@ addBookForm.addEventListener("submit", (e) => {
   addDoc(colRef, {
     title: addBookForm.title.value,
     author: addBookForm.author.value,
+    createdAt: serverTimestamp(),
   }).then(() => {
     addBookForm.reset();
   });
