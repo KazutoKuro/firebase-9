@@ -7,6 +7,8 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  query,
+  where,
 } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyCTrzs8_L-G0s34tSjnMUtrUPG8m7q-YB8",
@@ -26,7 +28,19 @@ const db = getFirestore();
 // collection ref
 const colRef = collection(db, "books");
 
+// queries
+const q = query(colRef, where("author", "==", "patrick rothfuss"));
+
 // real time get collection data
+
+// onSnapshot(colRef, (snapshot) => {
+onSnapshot(q, (snapshot) => {
+  let books = [];
+  snapshot.docs.forEach((doc) => {
+    books.push({ ...doc.data(), id: doc.id });
+  });
+  console.log(books);
+});
 
 // getDocs(colRef)
 //   .then((snapshot) => {
@@ -40,15 +54,6 @@ const colRef = collection(db, "books");
 //   .catch((err) => {
 //     console.log(err.message);
 //   });
-
-onSnapshot(colRef, (snapshot) => {
-  // console.log(snapshot.docs);
-  let books = [];
-  snapshot.docs.forEach((doc) => {
-    books.push({ ...doc.data(), id: doc.id });
-  });
-  console.log(books);
-});
 
 // adding docs
 const addBookForm = document.querySelector(".add");
