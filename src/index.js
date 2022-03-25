@@ -14,6 +14,8 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 const firebaseConfig = {
   apiKey: "AIzaSyCTrzs8_L-G0s34tSjnMUtrUPG8m7q-YB8",
   authDomain: "fir-9-dojo-65c85.firebaseapp.com",
@@ -28,6 +30,7 @@ initializeApp(firebaseConfig);
 
 // init services
 const db = getFirestore();
+const auth = getAuth();
 
 // collection ref
 const colRef = collection(db, "books");
@@ -83,11 +86,6 @@ updateForm.addEventListener("submit", (e) => {
 
 // get a single document
 const docRef = doc(db, "books", "tfCXyCw7QxmXbusf4JeI");
-
-// getDoc(docRef).then((doc) => {
-//   console.log(doc.data(), doc.id);
-// });
-
 onSnapshot(docRef, (doc) => {
   console.log(doc.data(), doc.id);
 });
