@@ -14,7 +14,7 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCTrzs8_L-G0s34tSjnMUtrUPG8m7q-YB8",
@@ -76,7 +76,7 @@ deleteBookForm.addEventListener("submit", (e) => {
 const updateForm = document.querySelector(".update");
 updateForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const docRef = doc(db, "books", updateForm.id.value);
+  let docRef = doc(db, "books", updateForm.id.value);
   updateDoc(docRef, {
     title: "updated title",
   }).then(() => {
@@ -88,4 +88,22 @@ updateForm.addEventListener("submit", (e) => {
 const docRef = doc(db, "books", "tfCXyCw7QxmXbusf4JeI");
 onSnapshot(docRef, (doc) => {
   console.log(doc.data(), doc.id);
+});
+
+// signing users up
+const signupForm = document.querySelector(".signup");
+signupForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const email = signupForm.email.value;
+  const password = signupForm.password.value;
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((cred) => {
+      console.log("user created: ", cred.user);
+      signupForm.reset();
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
 });
