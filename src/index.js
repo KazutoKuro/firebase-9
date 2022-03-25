@@ -83,11 +83,6 @@ updateForm.addEventListener("submit", (e) => {
 
 // get a single document
 const docRef = doc(db, "books", "tfCXyCw7QxmXbusf4JeI");
-
-// getDoc(docRef).then((doc) => {
-//   console.log(doc.data(), doc.id);
-// });
-
 onSnapshot(docRef, (doc) => {
   console.log(doc.data(), doc.id);
 });
